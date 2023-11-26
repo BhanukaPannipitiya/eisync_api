@@ -32,9 +32,21 @@ exports.AddAppliance = async (req, res) => {
 
 //create a endpoint to get all appliances
 exports.getAllAppliances = async (req, res) => {
-  const appliances = await Appliance.find();
-  console.log("Appliances:", appliances);
-  res.json(appliances);
+  try {
+    // Assuming you have a userId parameter in the query
+    const { id } = req.query;
+    console.log("userId", id);
+
+    // Fetch appliances based on the userId
+    const appliances = await Appliance.find({ userId: id });
+    console.log("appliances", appliances);
+    // Send the appliances as a JSON response
+    res.json(appliances);
+  } catch (error) {
+    // Handle errors, such as database errors
+    console.error("Error fetching appliances:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
 };
 
 //create a endpoint to calculate total cost
@@ -83,18 +95,18 @@ exports.saveEstimation = async (req, res) => {
       fromDate,
       toDate,
       currencyType,
-      estimatedCost,
+      totalCost ,
       isActive,
       createdDate,
       userId,
     } = req.body;
-
+    console.log("Request Body:", req.body);
     // Create a new CostEstimation instance
     const newEstimation = new CostEstimation({
       fromDate,
       toDate,
       currencyType,
-      estimatedCost,
+      estimatedCost: totalCost,
       isActive,
       createdDate,
       userId,
@@ -110,6 +122,20 @@ exports.saveEstimation = async (req, res) => {
   }
 };
 
+//get estimations by id
+exports.getAllEstimationsByUserId = async (req, res) => {
+  try {
+    const { userId } = req.params; // Assuming userId is a parameter in the URL
+
+    // Fetch all estimations for the given userId
+    const estimations = await CostEstimation.find({ userId });
+    console.log("estimations", estimations);
+    res.status(200).json(estimations);
+  } catch (error) {
+    console.error("Error fetching estimations:", error.message);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
 // Create a new goal
 exports.createGoal = async (req, res) => {
   try {

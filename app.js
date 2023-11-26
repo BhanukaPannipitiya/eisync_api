@@ -4,7 +4,9 @@ require("./Models/db");
 const cors = require("cors");
 const userRoute = require("./Routes/userRoute");
 
+
 const app = express();
+
 
 app.use(
   cors({
@@ -24,6 +26,7 @@ app.listen(PORT, () => {
 app.use(express.json());
 
 app.use(userRoute);
+
 
 app.get("/", (req, res) => {
   res.send("Hello World!");

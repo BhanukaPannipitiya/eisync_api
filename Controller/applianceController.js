@@ -3,7 +3,8 @@ const CostEstimation = require("../Models/costEstimation");
 const Goal = require("../Models/goal");
 
 exports.AddAppliance = async (req, res) => {
-  console.log("first", req.body);
+  console.log("Request Body:", req.body);
+
   const appliance = new Appliance({
     deviceType: req.body.deviceType,
     power: req.body.power,
@@ -12,19 +13,27 @@ exports.AddAppliance = async (req, res) => {
     deviceModel: req.body.deviceModel,
     deviceBrand: req.body.deviceBrand,
     isActive: true, // Remove quotes
-    createdOn: Date.now(),
+    createdOn: new Date(),
+    deviceONStatus: req.body.deviceONStatus, // Include the deviceONStatus field
     userId: req.body.userId,
   });
 
-  console.log("first", appliance);
-  const savedAppliance = await appliance.save();
+  console.log("Created Appliance:", appliance);
 
-  res.json(savedAppliance);
+  try {
+    const savedAppliance = await appliance.save();
+    console.log("Saved Appliance:", savedAppliance);
+    res.json(savedAppliance);
+  } catch (error) {
+    console.error("Error saving appliance:", error.message);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
 };
 
 //create a endpoint to get all appliances
 exports.getAllAppliances = async (req, res) => {
   const appliances = await Appliance.find();
+  console.log("Appliances:", appliances);
   res.json(appliances);
 };
 
@@ -130,5 +139,56 @@ exports.createGoal = async (req, res) => {
     res.json(savedGoal);
   } catch (error) {
     res.status(500).json({ error: error.message });
+  }
+};
+
+//update device onHours
+exports.updateDeviceOnHours = async (req, res) => {
+  try {
+    const { deviceId, onHours } = req.body;
+
+    // Find the appliance by deviceId
+    const appliance = await Appliance.findById(deviceId);
+
+    if (!appliance) {
+      return res.status(404).json({ error: "Device not found" });
+    }
+
+    // Update the onHours field
+    appliance.deviceONStatus = onHours;
+
+    // Save the updated appliance
+    const updatedAppliance = await appliance.save();
+    console.log(updatedAppliance);
+
+    res.json(updatedAppliance);
+  } catch (error) {
+    console.error("Error updating device onHours:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+//remove appliance or deactivate by setting isActive to false
+exports.removeDevice = async (req, res) => {
+  try {
+    const { deviceId } = req.body;
+
+    // Find the appliance by deviceId
+    const appliance = await Appliance.findById(deviceId);
+
+    if (!appliance) {
+      return res.status(404).json({ error: "Device not found" });
+    }
+
+    // If you want to deactivate the device, set isActive to false
+    appliance.isActive = false;
+
+    // Save the updated appliance
+    const updatedAppliance = await appliance.save();
+
+    res.json(updatedAppliance);
+  } catch (error) {
+    console.error("Error deactivating device:", error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 };

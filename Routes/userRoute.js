@@ -13,6 +13,8 @@ const {
   createUser,
   loginUser,
   getUserEmailById,
+  getUserDetailsById,
+  updateUserDetails,
 } = require("../Controller/userController");
 const router = express.Router();
 
@@ -27,6 +29,9 @@ router.post("/loginUser", loginUser);
 router.post("/createUser", createUser);
 router.get("/getUserEmailById",getUserEmailById);
 router.get("/getAllEstimationsByUserId",getAllEstimationsByUserId);
+router.get("/getUserDetailsById",getUserDetailsById);
+router.post("/updateUserDetails",updateUserDetails);
+
 
 // router.post("/createUser", createUser);
 

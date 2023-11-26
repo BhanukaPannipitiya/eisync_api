@@ -38,7 +38,6 @@ exports.createUser = async (req, res) => {
   }
 };
 
-
 //login
 exports.loginUser = async (req, res) => {
   console.log("first", req.body);
@@ -67,7 +66,7 @@ exports.loginUser = async (req, res) => {
 exports.getUserEmailById = async (req, res) => {
   try {
     const { id } = req.query;
-    console.log("userId", id); 
+    console.log("userId", id);
 
     const user = await User.findById(id);
     console.log("user", user);
@@ -86,5 +85,62 @@ exports.getUserEmailById = async (req, res) => {
   }
 };
 
+exports.getUserDetailsById = async (req, res) => {
+  try {
+    const { id } = req.query;
+    console.log("userId", id);
 
+    const user = await User.findById(id);
+    console.log("user", user);
 
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const userDetails = {
+      name: user.name,
+      phoneNumber: user.phoneNumber,
+      country: user.country,
+    };
+    console.log("userDetails", userDetails);
+
+    return res.status(200).json({ userDetails });
+  } catch (error) {
+    console.error("Error retrieving user details:", error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+exports.updateUserDetails = async (req, res) => {
+  try {
+    const { id } = req.body; // Assuming you'll pass the user ID in the request body
+    const { name, phone, country } = req.body;
+
+    // Find the user by ID
+    const user = await User.findById(id);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Update user details
+    user.name = name;
+    user.phoneNumber = phone;
+    user.country = country;
+
+    // Save the updated user
+    const updatedUser = await user.save();
+
+    return res.status(200).json({
+      message: "User details updated successfully",
+      updatedUser: {
+        name: updatedUser.name,
+        phoneNumber: updatedUser.phone,
+        country: updatedUser.country,
+      },
+    });
+  } catch (error) {
+    console.error("Error updating user details:", error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+};

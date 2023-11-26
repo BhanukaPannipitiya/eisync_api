@@ -2,7 +2,7 @@ const express = require("express");
 require("dotenv").config();
 require("./Models/db");
 const cors = require("cors");
-const userRouter = require("./Routes/userRoute");
+const userRoute = require("./Routes/userRoute");
 
 const app = express();
 
@@ -15,9 +15,6 @@ app.use(
   })
 );
 
-// Use the router you've required
-// app.use('/addAppliance', addApplinceRouter);
-
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
@@ -25,7 +22,9 @@ app.listen(PORT, () => {
 });
 
 app.use(express.json());
-app.use(userRouter);
+
+app.use(userRoute);
+
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });

@@ -1,20 +1,8 @@
 const express = require("express");
-const {
-  AddAppliance,
-  createUser,
-  getAllAppliances,
-  calculateTotalCost,
-  saveEstimation,
-  createGoal,
-} = require("../Controller/applianceController");
+const { createUser, loginUser } = require("../Controller/userController");
 const router = express.Router();
 
-router.post("/addAppliance", AddAppliance);
-router.post("/calculateTotalCost", calculateTotalCost);
-router.get("/getAllAppliances", getAllAppliances);
-router.post("/saveEstimation", saveEstimation);
-router.post("/createGoal", createGoal);
-
-// router.post("/createUser", createUser);
+router.post("/createUser", createUser);
+router.post("/loginUser", loginUser);
 
 module.exports = router;

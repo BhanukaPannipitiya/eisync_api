@@ -1,6 +1,6 @@
 const Appliance = require("../Models/appliance");
 const CostEstimation = require("../Models/costEstimation");
-const Goal = require('../Models/goal');
+const Goal = require("../Models/goal");
 
 exports.AddAppliance = async (req, res) => {
   console.log("first", req.body);
@@ -102,7 +102,7 @@ exports.saveEstimation = async (req, res) => {
 };
 
 // Create a new goal
- exports.createGoal = async (req, res) => {
+exports.createGoal = async (req, res) => {
   try {
     const {
       goalName,

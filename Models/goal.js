@@ -23,6 +23,9 @@ const goalSchema = new mongoose.Schema({
     status: {
       type: String
     },
+    alertOverUsage: {
+      type: Boolean
+    },
     userId: {
       type: String
     }

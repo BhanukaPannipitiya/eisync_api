@@ -28,6 +28,9 @@ const applianceSchema = new mongoose.Schema({
   createdOn: {
     type: Date,
   },
+  deviceONStatus: {
+    type: Boolean,
+  },
   userId: {
     type: String,
   },

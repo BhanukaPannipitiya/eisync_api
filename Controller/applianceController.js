@@ -49,6 +49,34 @@ exports.getAllAppliances = async (req, res) => {
   }
 };
 
+exports.getAllActiveAppliances = async (req, res) => {
+  try {
+    const { id } = req.query;
+    console.log("Hitted at getAllActiveAppliances");
+
+    const activeAppliances = await Appliance.find({
+      userId: id,
+      deviceONStatus: true,
+    });
+
+    const activeDeviceCount = activeAppliances.length;
+
+    // Calculate total power consumption
+    let totalPower = 0;
+    activeAppliances.forEach((appliance) => {
+      totalPower += appliance.power;
+    });
+
+    console.log("Active Device Count:", activeDeviceCount);
+    console.log("Total Power Consumption:", totalPower);
+
+    res.json({ activeDeviceCount, totalPower });
+  } catch (error) {
+    console.error("Error fetching appliances:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
 //create a endpoint to calculate total cost
 exports.calculateTotalCost = async (req, res) => {
   try {
@@ -95,7 +123,7 @@ exports.saveEstimation = async (req, res) => {
       fromDate,
       toDate,
       currencyType,
-      totalCost ,
+      totalCost,
       isActive,
       createdDate,
       userId,

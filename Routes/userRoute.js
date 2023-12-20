@@ -8,6 +8,7 @@ const {
   createGoal,
   removeDevice,
   getAllEstimationsByUserId,
+  getAllActiveAppliances,
 } = require("../Controller/applianceController");
 const {
   createUser,
@@ -27,11 +28,11 @@ router.post("/updateDeviceOnHours", updateDeviceOnHours);
 router.post("/removeDevice", removeDevice);
 router.post("/loginUser", loginUser);
 router.post("/createUser", createUser);
-router.get("/getUserEmailById",getUserEmailById);
-router.get("/getAllEstimationsByUserId",getAllEstimationsByUserId);
-router.get("/getUserDetailsById",getUserDetailsById);
-router.post("/updateUserDetails",updateUserDetails);
-
+router.get("/getUserEmailById", getUserEmailById);
+router.get("/getAllEstimationsByUserId", getAllEstimationsByUserId);
+router.get("/getAllActiveAppliances", getAllActiveAppliances);
+router.get("/getUserDetailsById", getUserDetailsById);
+router.post("/updateUserDetails", updateUserDetails);
 
 // router.post("/createUser", createUser);
 
